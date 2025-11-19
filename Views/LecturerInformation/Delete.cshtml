@@ -1,0 +1,30 @@
+﻿@model CMCS.Models.LecturerModel
+
+@{
+    ViewData["Title"] = "Delete Lecturer";
+}
+
+<h1 class="text-danger mb-4">Delete Confirmation</h1>
+<p class="lead">Are you sure you want to delete the record for <strong>@Model.FullName</strong> (@Model.LecturerId)?</p>
+<hr />
+
+<div class="card shadow-sm">
+    <div class="card-header bg-danger text-white">
+        <h5>Lecturer Details to be Deleted</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractHourlyRate)</dt>
+            <dd class="col-sm-8">R@Model.ContractHourlyRate.ToString("N2")</dd>
+        </dl>
+    </div>
+    <div class="card-footer">
+        <form asp-action="Delete" asp-route-id="@Model.LecturerId" method="post" class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Confirm Deletion</button>
+        </form>
+    </div>
+</div>

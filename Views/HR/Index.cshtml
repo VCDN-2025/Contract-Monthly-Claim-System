@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "HR Management Dashboard";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">HR Management Dashboard</h1>
+    <hr />
+
+    <div class="row">
+
+        <div class="col-md-6 mb-4">
+            <div class="card text-center bg-light shadow-lg border-primary">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Lecturer Contracts & Information</h5>
+                    <p class="card-text">Access the full CRUD system to view, add, and update lecturer profiles and contract details.</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-primary btn-lg stretched-link">Manage Lecturer Contracts</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card text-center bg-light shadow-lg border-secondary">
+                <div class="card-body">
+                    <h5 class="card-title text-success">Rate Management (Future Feature)</h5>
+                    <p class="card-text">Manage the system's global hourly rates for payment cycles. (To be implemented later).</p>
+                </div>
+                <div class="card-footer bg-transparent border-0">
+                    <a href="#" class="btn btn-secondary btn-lg disabled">Rates Management</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="alert alert-info">
+                <strong>System Note:</strong> Lecturer profile updates (name, rate) made here will immediately affect any new claims submitted.
+            </div>
+        </div>
+    </div>
+</div>

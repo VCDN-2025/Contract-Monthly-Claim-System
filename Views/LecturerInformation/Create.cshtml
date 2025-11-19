@@ -1,0 +1,61 @@
+﻿@model CMCS.Models.LecturerModel
+
+@{
+    ViewData["Title"] = "Add New Lecturer";
+}
+
+<h1 class="mb-4">Add New Lecturer</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ContractHourlyRate" class="form-label"></label>
+                        <input asp-for="ContractHourlyRate" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="ContractHourlyRate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ContractStartDate" class="form-label"></label>
+                        <input asp-for="ContractStartDate" class="form-control" type="date" />
+                        <span asp-validation-for="ContractStartDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ContractEndDate" class="form-label"></label>
+                        <input asp-for="ContractEndDate" class="form-control" type="date" />
+                        <span asp-validation-for="ContractEndDate" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" asp-for="IsActive" />
+                        <label class="form-check-label" asp-for="IsActive"></label>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-primary">Save Lecturer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
