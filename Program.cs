@@ -1,4 +1,4 @@
-using CMCS.Data;
+using CMCS.DataSeeding;
 using CMCS.Models;
 using CMCS.Services;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +9,7 @@ namespace CMCS
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
@@ -50,7 +50,24 @@ namespace CMCS
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
+            // Seed roles and admin user
+            using (var scope = app.Services.CreateScope())
+            {
+                var serviceProvider = scope.ServiceProvider;
+                try
+                {
+                    // Execute the seeding logic asynchronously
+                    await DataSeeding.DbSeeder.SeedRolesAndAdminAsync(serviceProvider);
+                }
+                catch (Exception ex)
+                {
+                    var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(ex, "An error occurred while seeding the database.");
+                }
+            }
+
             app.Run();
         }
+
     }
 }
