@@ -25,7 +25,8 @@ namespace CMCS
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-           
+            builder.Services.AddScoped<DataRepository>();
+
             builder.Services.AddScoped<FileUploadService>();
 
             var app = builder.Build();
