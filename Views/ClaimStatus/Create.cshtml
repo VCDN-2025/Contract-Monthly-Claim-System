@@ -87,7 +87,7 @@
         $(document).ready(function () {
             // Function to perform the calculation and update the display
             function updateClaimAmount() {
-                // Get values and default to 0 if input is empty/invalid
+                // Get values, default to 0 if input is empty/invalid
                 let hours = parseFloat($('#hoursInput').val()) || 0;
                 let rate = parseFloat($('#rateInput').val()) || 0;
 
@@ -98,10 +98,10 @@
                 $('#calculatedAmount').text('R' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
             }
 
-            // Binding the calculation function to input change events
+            // Bind the calculation function to input change events
             $('#hoursInput, #rateInput').on('input', updateClaimAmount);
 
-            // Runnnig on initial load to display R0.00 or existing value
+            // Run on initial load to display R0.00 or existing value
             updateClaimAmount();
         });
     </script>
