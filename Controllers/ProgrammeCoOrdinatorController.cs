@@ -1,14 +1,20 @@
 ﻿using CMCS.DataSeeding;
 using CMCS.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace CMCS.Controllers
 {
+    
     [Authorize(Roles = DbSeeder.Roles.ProgrammeCoordinator)]
     public class ProgrammeCoOrdinatorController : Controller
     {
         private readonly DataRepository _dataRepository;
+        private const double MAX_HOURS_PER_MONTH = 150.0; // Define the policy limit for automation
 
         // Constructor: Initializes the controller with the data repository dependency.
         public ProgrammeCoOrdinatorController(DataRepository dataRepository)
@@ -19,7 +25,6 @@ namespace CMCS.Controllers
         // Index (GET): Displays a list of claims that are awaiting Programme Co-ordinator (PC) verification.
         public IActionResult Index()
         {
-
             var claims = _dataRepository.GetAllClaims()
                 .Where(c => c.Status == ClaimStatus.AwaitingPCVerification)
                 .ToList();
@@ -28,6 +33,7 @@ namespace CMCS.Controllers
         }
 
         // Verify (POST): Moves a claim from PC Verification to Awaiting AM Approval and records the action date.
+        // [In-text reference: Automates claim verification against MAX_HOURS_PER_MONTH policy.]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Verify(string id)
@@ -35,17 +41,33 @@ namespace CMCS.Controllers
             var claim = _dataRepository.GetClaimById(id);
             if (claim == null) return NotFound();
 
-            claim.Status = ClaimStatus.AwaitingAMApproval;
+            
+            // Business Rule Check Hours Policy 
+          
+            if (claim.HoursWorked > MAX_HOURS_PER_MONTH)
+            {
+                // If the claim violates the policy, automatically reject it and stop verification
+                TempData["ErrorMessage"] = $"AUTOMATED REJECTION: Claim {id} violates policy. Claimed hours ({claim.HoursWorked}h) exceed the limit of {MAX_HOURS_PER_MONTH} hours.";
+
+                // Set to RejectedByPC status automatically
+                claim.Status = ClaimStatus.RejectedByPC;
+                claim.PcActionDate = DateTime.Now;
+                _dataRepository.UpdateClaim(claim);
+
+                return RedirectToAction(nameof(Index));
+            }
+           
+
+            // If the policy check passes:
+            claim.Status = ClaimStatus.AwaitingAMApproval; // Move to next stage
             claim.PcActionDate = DateTime.Now;
             _dataRepository.UpdateClaim(claim);
 
-            TempData["SuccessMessage"] = $"Claim {id} verified. Moved to Academic Manager Approval.";
+            TempData["SuccessMessage"] = $"Claim {id} verified and meets policy. Moved to Academic Manager Approval.";
             return RedirectToAction(nameof(Index));
         }
 
         // Reject (POST): Changes the status of a specific claim to 'RejectedByPC' and records the action date.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public IActionResult Reject(string id)
         {
             var claim = _dataRepository.GetClaimById(id);
@@ -63,6 +85,7 @@ namespace CMCS.Controllers
         public async Task<IActionResult> DownloadDocument(string claimId)
         {
             var claim = _dataRepository.GetClaimById(claimId);
+        
             var document = _dataRepository.GetDocumentById(claim?.DocumentId ?? "");
 
             if (document == null || !System.IO.File.Exists(document.EncryptedFilePath))
@@ -74,10 +97,10 @@ namespace CMCS.Controllers
 
             try
             {
-
+                //Retrieves the document file for download.]
                 var fileBytes = await System.IO.File.ReadAllBytesAsync(document.EncryptedFilePath);
 
-
+                // Determines the correct MIME type based on file extension
                 string mimeType = Path.GetExtension(document.OriginalFileName).ToLowerInvariant() switch
                 {
                     ".pdf" => "application/pdf",
