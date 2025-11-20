@@ -1,9 +1,11 @@
-﻿using CMCS.Data;
+﻿using CMCS.DataSeeding;
 using CMCS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMCS.Controllers
 {
+    [Authorize(Roles = DbSeeder.Roles.ProgrammeCoordinator)]
     public class ProgrammeCoOrdinatorController : Controller
     {
         private readonly DataRepository _dataRepository;

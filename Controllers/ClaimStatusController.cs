@@ -1,10 +1,12 @@
-﻿using CMCS.Data;
+﻿using CMCS.DataSeeding;
 using CMCS.Models;
 using CMCS.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMCS.Controllers
 {
+    [Authorize(Roles = DbSeeder.Roles.Lecturer)]
     public class ClaimStatusController : Controller
     {
         private readonly DataRepository _dataRepository;

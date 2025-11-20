@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using CMCS.DataSeeding;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CMCS.Controllers
 {
+    [Authorize(Roles = DbSeeder.Roles.HR)]
     public class HRController : Controller
     {
         public IActionResult Index()

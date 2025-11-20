@@ -1,9 +1,11 @@
-﻿using CMCS.Data;
+﻿using CMCS.DataSeeding;
 using CMCS.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMCS.Controllers
 {
+    [Authorize(Roles = DbSeeder.Roles.HR)]
     public class LecturerInformationController : Controller
     {
         private readonly DataRepository _dataRepository;

@@ -1,9 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using CMCS.DataSeeding
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    // Fetches user and roles list once for use in navigation visibility
+    var user = await UserManager.GetUserAsync(User);
+    var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Contractor_Monthly_Claim_System</title>
+    <title>@ViewData["Title"] - CMCS</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CMCS.styles.css" asp-append-version="true" />
@@ -26,20 +36,44 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="LecturerInformation" asp-action="Index">Lecturer Info</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ClaimStatus" asp-action="Index">Claim Dashboard</a>
-                        
+                        @* LECTURER LINKS visible to Lecturers *@
+                        @if (User.Identity.IsAuthenticated && roles.Contains(DbSeeder.Roles.Lecturer))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ClaimStatus" asp-action="Index">Track Approvals</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ClaimDocuments" asp-action="Index">Supporting Docs</a>
+                            </li>
+                        }
 
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ProgrammeCoOrdinator" asp-action="Index">PC Review</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AcademicManager" asp-action="Index">AM Approval</a>
-                        </li>
-                        <li class="nav-item">
+                        @* HR management links visible to HR *@
+                        @if (User.Identity.IsAuthenticated && roles.Contains(DbSeeder.Roles.HR))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="LecturerInformation" asp-action="Index">Lecturer Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="HR" asp-action="Index">HR Management</a>
+                            </li>
+                        }
+
+                        @* Approval workflow links visible to PC or AM *@
+                        @if (User.Identity.IsAuthenticated && roles.Contains(DbSeeder.Roles.ProgrammeCoordinator))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="ProgrammeCoOrdinator" asp-action="Index">PC Review</a>
+                            </li>
+                        }
+                        @if (User.Identity.IsAuthenticated && roles.Contains(DbSeeder.Roles.AcademicManager))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="AcademicManager" asp-action="Index">AM Approval</a>
+                            </li>
+                        }
+
+                        @* Login/Logout Link *@
+                        <li class="nav-item ms-auto">
                             @if (User.Identity.IsAuthenticated)
                             {
                                 <form asp-controller="Account" asp-action="Logout" method="post">
@@ -53,7 +87,7 @@
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
                             }
                         </li>
-                       
+
                     </ul>
                 </div>
             </div>

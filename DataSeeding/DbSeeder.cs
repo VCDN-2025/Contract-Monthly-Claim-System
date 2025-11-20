@@ -15,15 +15,15 @@ namespace CMCS.DataSeeding
         }
 
         private const string HR_EMAIL = "hr@cmcs.com";
-        private const string HR_PASSWORD = "HRPassword123!"; 
+        private const string HR_PASSWORD = "HRPassword123!";
 
         public static async Task SeedRolesAndAdminAsync(IServiceProvider serviceProvider)
         {
-          
+
             var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-         
+
             await EnsureRoleExistsAsync(roleManager, Roles.HR);
             await EnsureRoleExistsAsync(roleManager, Roles.AcademicManager);
             await EnsureRoleExistsAsync(roleManager, Roles.ProgrammeCoordinator);
@@ -36,13 +36,13 @@ namespace CMCS.DataSeeding
                 {
                     UserName = HR_EMAIL,
                     Email = HR_EMAIL,
-                    EmailConfirmed = true 
+                    EmailConfirmed = true
                 };
 
-               
+
                 var result = await userManager.CreateAsync(hrUser, HR_PASSWORD);
 
-              
+
                 if (result.Succeeded)
                 {
                     await userManager.AddToRoleAsync(hrUser, Roles.HR);

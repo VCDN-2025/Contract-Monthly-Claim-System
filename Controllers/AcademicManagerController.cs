@@ -1,9 +1,10 @@
-﻿using CMCS.Data;
+﻿using CMCS.DataSeeding;
 using CMCS.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace CMCS.Controllers
 {
+    [Authorize(Roles = DbSeeder.Roles.AcademicManager)]
     public class AcademicManagerController : Controller
     {
         private readonly DataRepository _dataRepository;

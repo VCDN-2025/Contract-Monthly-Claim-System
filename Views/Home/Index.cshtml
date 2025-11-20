@@ -1,86 +1,141 @@
-﻿@{
-    ViewData["Title"] = "Welcome To The CMCS"; // Updated Title
+﻿@using Microsoft.AspNetCore.Identity
+@using CMCS.DataSeeding
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@{
+    ViewData["Title"] = "Welcome To The CMCS";
+    // Fetch user and roles list once at the top of the view
+    var user = await UserManager.GetUserAsync(User);
+    var roles = user != null ? await UserManager.GetRolesAsync(user) : new List<string>();
+
+    // Helper function to check if the current user is in a specific role
+    bool IsInRole(string roleName) => user != null && roles.Contains(roleName);
 }
 
 <div class="p-5 mb-4 bg-light rounded-3 text-center">
     <h1 class="display-4">Welcome To The CMCS</h1>
     <p class="lead">Your portal for managing independent contractor claims efficiently and accurately.</p>
+
+    @if (!SignInManager.IsSignedIn(User))
+    {
+        <div class="alert alert-warning mt-4">
+            Please **Log In** to view your role-specific dashboard actions.
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-success mt-4">
+            Logged in as <strong>@User.Identity.Name</strong>. Your Role: <strong>@(string.Join(", ", roles))</strong>
+        </div>
+    }
 </div>
 
 <div class="container mt-3">
     <div class="row">
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Submit New Claim</h5>
-                    <p class="card-text">Quickly and easily create a new monthly claim for your services.</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="ClaimStatus" asp-action="Create" class="btn btn-primary btn-lg stretched-link">Start Submission</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-info">Track Claim Approvals</h5>
-                    <p class="card-text">View the current status and progress of all your submitted claims.</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="ClaimStatus" asp-action="Index" class="btn btn-info btn-lg stretched-link">Track Status</a>
+        @*LECTURER ACTIONS*@
+        @if (IsInRole(DbSeeder.Roles.Lecturer))
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Submit New Claim</h5>
+                        <p class="card-text">Quickly and easily create a new monthly claim for your services.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="ClaimStatus" asp-action="Create" class="btn btn-primary btn-lg stretched-link">Start Submission</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-success">My Lecturer Info</h5>
-                    <p class="card-text">Manage your contract, personal, and payment details (HR Data).</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-success btn-lg stretched-link">Manage Info</a>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-info">Track Claim Approvals</h5>
+                        <p class="card-text">View the current status and progress of all your submitted claims.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="ClaimStatus" asp-action="Index" class="btn btn-info btn-lg stretched-link">Track Status</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-secondary">Programme Co-ordinator</h5>
-                    <p class="card-text">Review and verify claims for academic and procedural correctness.</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="ProgrammeCoOrdinator" asp-action="Index" class="btn btn-secondary btn-lg stretched-link">PC Review</a>
+            @* My Lecturer Info Card*@
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">My Lecturer Info</h5>
+                        <p class="card-text">Manage your contract, personal, and payment details.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-success btn-lg stretched-link">Manage Info</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-danger">Academic Manager</h5>
-                    <p class="card-text">Conduct final financial approval and sign-off for payment authorization.</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="AcademicManager" asp-action="Index" class="btn btn-danger btn-lg stretched-link">AM Final Approval</a>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">Supporting Documents</h5>
+                        <p class="card-text">Upload and manage documents related to your claims.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="ClaimDocuments" asp-action="Index" class="btn btn-warning btn-lg stretched-link">Manage Docs</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
 
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 shadow-sm text-center">
-                <div class="card-body">
-                    <h5 class="card-title text-dark">HR Management</h5>
-                    <p class="card-text">Manage all lecturer contracts, rates, and core system compliance data.</p>
-                </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="HR" asp-action="Index" class="btn btn-dark btn-lg stretched-link">HR Dashboard</a>
+        @* PROGRAMME CO-ORDINATOR ACTION*@
+        @if (IsInRole(DbSeeder.Roles.ProgrammeCoordinator))
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-secondary">Programme Co-ordinator</h5>
+                        <p class="card-text">Review and verify claims for academic and procedural correctness.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="ProgrammeCoOrdinator" asp-action="Index" class="btn btn-secondary btn-lg stretched-link">PC Review</a>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
+
+        @* ACADEMIC MANAGER ACTION *@
+        @if (IsInRole(DbSeeder.Roles.AcademicManager))
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-danger">Academic Manager</h5>
+                        <p class="card-text">Conduct final financial approval and sign-off for payment authorization.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="AcademicManager" asp-action="Index" class="btn btn-danger btn-lg stretched-link">AM Final Approval</a>
+                    </div>
+                </div>
+            </div>
+        }
+
+   
+        @* HR MANAGEMENT ACTION*@
+  
+        @if (IsInRole(DbSeeder.Roles.HR))
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark">HR Management</h5>
+                        <p class="card-text">Manage all lecturer contracts, rates, and core system compliance data.</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a asp-controller="HR" asp-action="Index" class="btn btn-dark btn-lg stretched-link">HR Dashboard</a>
+                    </div>
+                </div>
+            </div>
+        }
 
     </div>
 </div>
