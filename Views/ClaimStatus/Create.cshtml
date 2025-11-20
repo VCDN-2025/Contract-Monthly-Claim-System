@@ -20,14 +20,18 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label asp-for="HoursWorked" class="form-label"></label>
-                            <input asp-for="HoursWorked" class="form-control" type="number" step="0.01" />
+                            <input asp-for="HoursWorked" class="form-control" id="hoursInput" type="number" step="0.01" />
                             <span asp-validation-for="HoursWorked" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
                             <label asp-for="HourlyRate" class="form-label"></label>
-                            <input asp-for="HourlyRate" class="form-control" type="number" step="0.01" />
+                            <input asp-for="HourlyRate" class="form-control" id="rateInput" type="number" step="0.01" />
                             <span asp-validation-for="HourlyRate" class="text-danger"></span>
                         </div>
+                    </div>
+
+                    <div class="alert alert-info mt-3">
+                        Total Claim Amount: <strong id="calculatedAmount">R0.00</strong>
                     </div>
 
                     <div class="mb-3">
@@ -78,4 +82,27 @@
         // Ensure validation scripts are loaded
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        $(document).ready(function () {
+            // Function to perform the calculation and update the display
+            function updateClaimAmount() {
+                // Get values and default to 0 if input is empty/invalid
+                let hours = parseFloat($('#hoursInput').val()) || 0;
+                let rate = parseFloat($('#rateInput').val()) || 0;
+
+                let amount = hours * rate;
+
+                // Format the amount as currency (R0.00)
+                // Note: The toFixed(2) ensures two decimal places.
+                $('#calculatedAmount').text('R' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+            }
+
+            // Binding the calculation function to input change events
+            $('#hoursInput, #rateInput').on('input', updateClaimAmount);
+
+            // Runnnig on initial load to display R0.00 or existing value
+            updateClaimAmount();
+        });
+    </script>
 }
