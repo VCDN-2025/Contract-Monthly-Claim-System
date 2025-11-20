@@ -1,5 +1,9 @@
 using CMCS.Data;
+using CMCS.Models;
 using CMCS.Services;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CMCS
 {
@@ -8,10 +12,20 @@ namespace CMCS
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                                   throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            builder.Services.AddDbContext<CmcsDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            // Configures Identity to use the DbContext and sets simple password rules for testing
+            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<CmcsDbContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddSingleton<DataRepository>();
+           
             builder.Services.AddScoped<FileUploadService>();
 
             var app = builder.Build();
