@@ -13,6 +13,11 @@ namespace CMCS.Models
         [Display(Name = "Lecturer ID")]
         public string LecturerId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 
+        // Foreign Key to the Identity User
+        [Required]
+        [StringLength(450)]
+        public string IdentityUserId { get; set; } = string.Empty;
+
         // Property: The full name of the lecturer, required and limited in length.
         [Required(ErrorMessage = "Full name is required.")]
         [StringLength(100)]
@@ -24,10 +29,6 @@ namespace CMCS.Models
         [EmailAddress]
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
-
-        [Required]
-        [StringLength(450)] 
-        public string IdentityUserId { get; set; } = string.Empty;
 
         // Property: The contractually agreed hourly rate, required and within a set range.
         [Required(ErrorMessage = "Hourly Rate is required.")]

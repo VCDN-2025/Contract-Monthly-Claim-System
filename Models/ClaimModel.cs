@@ -13,9 +13,15 @@ namespace CMCS.Models
         [Required]
         public string ClaimId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 
-        // Property: The unique ID of the Lecturer who submitted the claim.
         [Required]
-        public string LecturerId { get; set; } = "LIC-101";
+        
+        public string LecturerId { get; set; } = string.Empty;
+
+        // Store the Identity User ID (Foreign Key to AspNetUsers table)
+        [Required]
+        [StringLength(450)] 
+        public string IdentityUserId { get; set; } = string.Empty;
+
 
         // Property: The date the claim was submitted, defaulted to the creation time.
         [Required]
@@ -52,7 +58,7 @@ namespace CMCS.Models
         public string DocumentId { get; set; } = string.Empty;
 
 
-        //Status Tracking Fields 
+        //Status Tracking Fields 
         // Property: The current status of the claim in the workflow, mandatory.
         [Required]
         public ClaimStatus Status { get; set; } = ClaimStatus.PendingSubmission;
