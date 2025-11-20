@@ -15,15 +15,27 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="mb-3">
+                        <label asp-for="IdentityUserId" class="form-label fs-5 text-primary">Link User Account</label>
+                        <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.UnassignedUsers">
+                            <option value="">-- Select Unassigned User Email --</option>
+                        </select>
+                        <span asp-validation-for="IdentityUserId" class="text-danger"></span>
+                        <small class="form-text text-muted">The selected user will be linked to this lecturer profile.</small>
+                    </div>
+                    <hr />
+
+                    <div class="mb-3">
                         <label asp-for="FullName" class="form-label"></label>
                         <input asp-for="FullName" class="form-control" />
                         <span asp-validation-for="FullName" class="text-danger"></span>
                     </div>
-                    <div class="mb-3">
+
+                    @* <div class="mb-3">
                         <label asp-for="Email" class="form-label"></label>
                         <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
-                    </div>
+                    </div> *@
+
                     <div class="mb-3">
                         <label asp-for="ContractHourlyRate" class="form-label"></label>
                         <input asp-for="ContractHourlyRate" class="form-control" type="number" step="0.01" />
@@ -46,7 +58,7 @@
 
                     <div class="d-flex justify-content-between mt-4">
                         <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                        <button type="submit" class="btn btn-primary">Save Lecturer</button>
+                        <button type="submit" class="btn btn-primary">Save Lecturer & Link</button>
                     </div>
                 </form>
             </div>
