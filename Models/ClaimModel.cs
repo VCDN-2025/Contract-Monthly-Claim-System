@@ -9,6 +9,7 @@ namespace CMCS.Models
     {
         //System Identification Fields
         // Property: Unique identifier for the claim, auto-generated upon creation.
+        [Key]
         [Required]
         public string ClaimId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 

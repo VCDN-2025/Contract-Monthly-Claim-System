@@ -8,6 +8,7 @@ namespace CMCS.Models
     public class LecturerModel
     {
         // Property: Unique system-generated identifier for the lecturer.
+        [Key]
         [Required]
         [Display(Name = "Lecturer ID")]
         public string LecturerId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();

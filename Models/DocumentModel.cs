@@ -9,6 +9,7 @@ namespace CMCS.Models
     {
         //System Identification Fields
         // Property: Unique identifier for the document, auto-generated upon creation.
+        [Key]
         [Required]
         public string DocumentId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
 
