@@ -25,6 +25,10 @@ namespace CMCS.Models
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;
 
+        [Required]
+        [StringLength(450)] 
+        public string IdentityUserId { get; set; } = string.Empty;
+
         // Property: The contractually agreed hourly rate, required and within a set range.
         [Required(ErrorMessage = "Hourly Rate is required.")]
         [Range(100.0, 1500.0, ErrorMessage = "Rate must be between R100.00 and R1500.00.")]

@@ -1,0 +1,50 @@
+﻿@model CMCS.Models.LecturerModel
+
+@{
+    ViewData["Title"] = "Edit Lecturer Rate";
+}
+
+<h2 class="mb-4">Set Rate for: @Model.FullName</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <form asp-action="EditRate" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="LecturerId" />
+                    <input type="hidden" asp-for="FullName" />
+                    <input type="hidden" asp-for="Email" />
+                    <input type="hidden" asp-for="IdentityUserId" />
+                    <input type="hidden" asp-for="ContractStartDate" />
+                    <input type="hidden" asp-for="ContractEndDate" />
+                    <input type="hidden" asp-for="IsActive" />
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4">Current Rate:</dt>
+                        <dd class="col-sm-8">R@Model.ContractHourlyRate.ToString("N2")</dd>
+                    </dl>
+
+                    <div class="mb-3">
+                        <label asp-for="ContractHourlyRate" class="form-label fs-5"></label>
+                        <input asp-for="ContractHourlyRate" class="form-control form-control-lg" type="number" step="0.01" />
+                        <span asp-validation-for="ContractHourlyRate" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="ManageRates" class="btn btn-secondary">Back to List</a>
+                        <button type="submit" class="btn btn-warning">Update Rate</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
