@@ -1,0 +1,81 @@
+﻿@model CMCS.Models.ClaimInputViewModel
+
+@{
+    ViewData["Title"] = "Submit New Claim";
+}
+
+<h1 class="mb-4">Submit Your Monthly Claim</h1>
+<hr />
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card shadow-lg">
+            <div class="card-body">
+
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="ClaimId" />
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="HoursWorked" class="form-label"></label>
+                            <input asp-for="HoursWorked" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="HoursWorked" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="HourlyRate" class="form-label"></label>
+                            <input asp-for="HourlyRate" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AdditionalNotes" class="form-label"></label>
+                        <textarea asp-for="AdditionalNotes" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4 p-3 border rounded bg-light">
+                        <label asp-for="SupportingDocument" class="form-label fs-5"></label>
+                        <input asp-for="SupportingDocument" class="form-control" type="file"
+                               accept=".pdf,.docx,.xlsx"
+                               onchange="document.getElementById('fileNameDisplay').textContent = this.files[0].name;" />
+                        <span asp-validation-for="SupportingDocument" class="text-danger"></span>
+
+                        <small class="form-text text-muted mt-2">Max 5MB. Only .pdf, .docx, .xlsx allowed.</small>
+                        <p class="mt-2">File Uploaded: <strong id="fileNameDisplay" class="text-primary">None</strong></p>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send-fill"></i> Submit Claim
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card h-100 bg-info text-white shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title">Claim Submission Guide</h5>
+                <p>Ensure your submission is accurate to avoid rejection:</p>
+                <ul>
+                    <li>The system requires one supporting document (e.g., attendance register or signed agreement).</li>
+                    <li>Hours worked should reflect the current cycle only.</li>
+                    <li>The system will automatically calculate the claim amount (Hours * Rate).</li>
+                    <li>Once submitted, claims cannot be modified by you.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        // Ensure validation scripts are loaded
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

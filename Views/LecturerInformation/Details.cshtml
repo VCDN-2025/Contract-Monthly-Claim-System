@@ -1,0 +1,40 @@
+﻿@model CMCS.Models.LecturerModel
+
+@{
+    ViewData["Title"] = "Lecturer Details";
+}
+
+<h1 class="mb-4">Lecturer Details</h1>
+<hr />
+
+<div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+        <h5>@Model.FullName (@Model.LecturerId)</h5>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Email)</dt>
+            <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractHourlyRate)</dt>
+            <dd class="col-sm-8">R@Model.ContractHourlyRate.ToString("N2")</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractStartDate)</dt>
+            <dd class="col-sm-8">@Model.ContractStartDate.ToShortDateString()</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractEndDate)</dt>
+            <dd class="col-sm-8">@Model.ContractEndDate.ToShortDateString()</dd>
+
+            <dt class="col-sm-4">@Html.DisplayNameFor(model => model.IsActive)</dt>
+            <dd class="col-sm-8">
+                <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">
+                    @(Model.IsActive ? "Active" : "Inactive")
+                </span>
+            </dd>
+        </dl>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+        <a asp-action="Edit" asp-route-id="@Model.LecturerId" class="btn btn-warning">Edit</a>
+        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>

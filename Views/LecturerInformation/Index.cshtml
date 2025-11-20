@@ -1,0 +1,62 @@
+﻿@model IEnumerable<CMCS.Models.LecturerModel>
+
+@{
+    ViewData["Title"] = "Lecturer Information Management";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Lecturer Information</h2>
+        <a asp-action="Create" class="btn btn-success">Add New Lecturer</a>
+    </div>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            @if (!Model.Any())
+            {
+                <p class="text-center text-muted">No lecturer records found. Click "Add New Lecturer" to begin.</p>
+            }
+            else
+            {
+                <table class="table table-striped table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th scope="col">@Html.DisplayNameFor(model => model.LecturerId)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.FullName)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.Email)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.ContractHourlyRate)</th>
+                            <th scope="col">@Html.DisplayNameFor(model => model.IsActive)</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.LecturerId</td>
+                                <td>@item.FullName</td>
+                                <td>@item.Email</td>
+                                <td>R@item.ContractHourlyRate.ToString("N2")</td>
+                                <td>
+                                    <span class="badge @(item.IsActive ? "bg-success" : "bg-danger")">
+                                        @(item.IsActive ? "Active" : "Inactive")
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@item.LecturerId" class="btn btn-sm btn-info text-white">Details</a>
+                                    <a asp-action="Edit" asp-route-id="@item.LecturerId" class="btn btn-sm btn-warning">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@item.LecturerId" class="btn btn-sm btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>

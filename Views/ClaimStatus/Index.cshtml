@@ -1,0 +1,89 @@
+﻿@model IEnumerable<CMCS.Models.ClaimModel>
+@using CMCS.Models
+
+@{
+    ViewData["Title"] = "Claim Status Dashboard";
+}
+
+<h1 class="mb-4">Claim Status Dashboard</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+        <h5>My Submitted Claims</h5>
+        <a asp-action="Create" class="btn btn-primary">Submit New Claim</a>
+    </div>
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-center text-muted">You have not submitted any claims yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th scope="col">Claim ID</th>
+                            <th scope="col">Submission Date</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col">Status & Progress</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <td>**@claim.ClaimId**</td>
+                                <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
+                                <td>@("R" + claim.ClaimAmount.ToString("N2"))</td>
+                                <td>
+                                    @{
+                                        var (progress, cssClass, statusText) = GetStatusDetails(claim.Status);
+                                    }
+                                    <span class="badge @cssClass mb-1">@statusText</span>
+                                    <div class="progress" style="height: 5px;">
+                                        <div class="progress-bar @cssClass" role="progressbar" style="width: @progress%" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a asp-action="Details" asp-route-id="@claim.ClaimId" class="btn btn-sm btn-info text-white">Details</a>
+                                    @if (claim.Status == ClaimStatus.PendingSubmission)
+                                    {
+                                        <a asp-action="Edit" asp-route-id="@claim.ClaimId" class="btn btn-sm btn-warning">Edit</a>
+                                        <a asp-action="Delete" asp-route-id="@claim.ClaimId" class="btn btn-sm btn-danger">Delete</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+@functions {
+    //Helper function to map ClaimStatus to Bootstrap styles and progress percentage
+    private (int Progress, string CssClass, string StatusText) GetStatusDetails(ClaimStatus status)
+    {
+        return status switch
+        {
+            ClaimStatus.PendingSubmission => (10, "bg-secondary", "Draft/Pending Submission"),
+            ClaimStatus.AwaitingPCVerification => (40, "bg-warning text-dark", "Awaiting Co-ordinator Verification"),
+            ClaimStatus.RejectedByPC => (40, "bg-danger", "Rejected by Co-ordinator"),
+            ClaimStatus.AwaitingAMApproval => (70, "bg-info", "Awaiting Manager Approval"),
+            ClaimStatus.RejectedByAM => (70, "bg-danger", "Rejected by Manager"),
+            ClaimStatus.Approved => (100, "bg-success", "Approved (Payment Pending)"),
+            _ => (0, "bg-light text-dark", "Unknown")
+        };
+    }
+}
