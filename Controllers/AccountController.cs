@@ -1,4 +1,10 @@
-﻿using CMCS.Models;
+﻿/*
+ * REFERENCE LIST
+ * CHATGPT. Login POST Framework [Online]. Available at: https://chatgpt.com/share/6920927b-cc48-8000-9795-a3496f12211d 
+ * MICROSOFT. ASP.NET Core Identity [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio 
+ * NWONAH, R. Working with Sessions and Cookies in ASP.NET Core [Online]. Available at: https://medium.com/@nwonahr/working-with-sessions-and-cookies-in-asp-net-core-013b24037d91 
+ */
+using CMCS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

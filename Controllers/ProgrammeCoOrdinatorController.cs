@@ -1,4 +1,9 @@
-﻿using CMCS.DataSeeding;
+﻿/*
+ * REFERENCE LIST
+ * NWONAH, R. Role-Based Access Control (RBAC) in C# and ASP.NET Core [Online]. Available at: https://medium.com/@nwonahr/role-based-access-control-rbac-in-c-and-asp-net-core-the-security-backbone-of-modern-apps-dea1204a0870 
+ * MICROSOFT. Data Persistence Design Patterns [Online]. Available at: https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence 
+ */
+using CMCS.DataSeeding;
 using CMCS.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;

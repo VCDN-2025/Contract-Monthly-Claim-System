@@ -1,10 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*
+ * REFERENCE LIST
+ * MICROSOFT. ASP.NET Core Identity [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio 
+ * MICROSOFT. Data Persistence Design Patterns [Online]. Available at: https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence 
+ * CHATGPT. Login POST Framework [Online]. Available at: https://chatgpt.com/share/6920927b-cc48-8000-9795-a3496f12211d 
+ */
+
+using System.ComponentModel.DataAnnotations;
 
 namespace CMCS.Models
 {
-    /// <summary>
-    /// Represents a Lecturer's Claim for work done, holding all necessary data and status information.
-    /// </summary>
+    //Represents a Lecturer's Claim for work done, holding all necessary data and status information.
     public class ClaimModel
     {
         //System Identification Fields

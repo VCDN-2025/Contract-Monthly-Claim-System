@@ -1,8 +1,15 @@
-﻿using CMCS.DataSeeding;
+﻿/*
+ * REFERENCE LIST
+ * NWONAH, R. Role-Based Access Control (RBAC) in C# and ASP.NET Core [Online]. Available at: https://medium.com/@nwonahr/role-based-access-control-rbac-in-c-and-asp-net-core-the-security-backbone-of-modern-apps-dea1204a0870 
+ * MICROSOFT. ASP.NET Core Identity [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio 
+ * NWONAH, R. Working with Sessions and Cookies in ASP.NET Core [Online]. Available at: https://medium.com/@nwonahr/working-with-sessions-and-cookies-in-asp-net-core-013b24037d91 
+ * MICROSOFT. Calculated Fields (Client-Side Auto-Calculation) [Online]. Available at: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-calculated-fields 
+ */
+using CMCS.DataSeeding;
 using CMCS.Models;
 using CMCS.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity; // ADDITION: Required for user manager
+using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc;
 
 namespace CMCS.Controllers
@@ -12,7 +19,7 @@ namespace CMCS.Controllers
     {
         private readonly DataRepository _dataRepository;
         private readonly FileUploadService _fileUploadService;
-        private readonly UserManager<IdentityUser> _userManager; // ADDITION: Declare user manager
+        private readonly UserManager<IdentityUser> _userManager;
 
         // Constructor: Initializes the controller with the data repository and file upload service dependencies.
         public ClaimStatusController(

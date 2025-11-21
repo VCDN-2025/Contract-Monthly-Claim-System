@@ -1,8 +1,7 @@
 ﻿namespace CMCS.Models
 {
-    /// <summary>
-    /// Defines the possible workflow states for a ClaimModel instance.
-    /// </summary>
+  
+    //Defines the possible workflow states for a ClaimModel instance.
     public enum ClaimStatus
     {
         // Enum Member: Initial state before the lecturer fully submits the claim.
