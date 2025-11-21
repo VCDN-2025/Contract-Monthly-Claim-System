@@ -1,41 +1,58 @@
-﻿@{
+﻿@model IEnumerable<CMCS.Models.LecturerModel>
+@{
     ViewData["Title"] = "HR Management Dashboard";
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">HR Management Dashboard</h1>
-    <hr />
+<h1 class="mb-4">HR Management Dashboard</h1>
+<p class="lead">System administration, user account management, and claims reporting.</p>
+<hr />
 
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+<div class="container mt-5">
     <div class="row">
-
-        <div class="col-md-6 mb-4">
-            <div class="card text-center bg-light shadow-lg border-primary">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">Lecturer Contracts & Information</h5>
-                    <p class="card-text">Access the full CRUD system to view, add, and update lecturer profiles and contract details.</p>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-lg border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">User Account Creation</h5>
                 </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-primary btn-lg stretched-link">Manage Lecturer Contracts</a>
+                <div class="card-body text-center">
+                    <p class="card-text">Create new user accounts and assign roles (Lecturer, PC, AM).</p>
+                </div>
+                <div class="card-footer bg-transparent text-center">
+                    <a asp-controller="HR" asp-action="CreateUser" class="btn btn-primary btn-lg stretched-link">Create New User</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-lg border-success">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Lecturer Profiles & Rates</h5>
+                </div>
+                <div class="card-body text-center">
+                    <p class="card-text">Access the full CRUD system to link accounts, set the official claim rate, and update contract details.</p>
+                </div>
+                <div class="card-footer bg-transparent text-center">
+                    <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-success btn-lg stretched-link">Manage Profiles & Rates</a>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6 mb-4">
-            <div class="card text-center shadow-lg border-warning">
-                <div class="card-body">
-                    <h5 class="card-title text-warning">Lecturer Claim Rate Setup</h5>
-                    <p class="card-text">Set the official contract hourly rate used for claim automation.</p>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-lg border-secondary">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title mb-0">Claims Report Generator</h5>
                 </div>
-                <div class="card-footer bg-transparent border-0">
-                    <a asp-controller="HR" asp-action="ManageRates" class="btn btn-warning btn-lg stretched-link">Manage Rates</a>
+                <div class="card-body text-center">
+                    <p class="card-text">Generate claims reports with multiple filters (status, amount, date) for payment processing.</p>
                 </div>
-            </div>
-        </div>
-        <div class="card h-100 shadow-lg border-success">
-            <div class="card-body text-center">
-                <h5 class="card-title text-success">User & Role Management</h5>
-                <p class="card-text">Create new user accounts and assign roles (Lecturer, PC, AM).</p>
-                <a asp-action="CreateUser" class="btn btn-success btn-lg">Create New User</a>
+                <div class="card-footer bg-transparent text-center">
+                    <a asp-controller="HR" asp-action="Reports" class="btn btn-dark btn-lg stretched-link">Generate Reports</a>
+                </div>
             </div>
         </div>
     </div>
@@ -43,7 +60,7 @@
     <div class="row mt-4">
         <div class="col-12">
             <div class="alert alert-info">
-                <strong>System Note:</strong> Lecturer profile updates (name, rate) made here will immediately affect any new claims submitted.
+                <strong>System Note:</strong> For Lecturers, Step 1 creates the login, and Step 2 links that login to the required **contract hourly rate** used in claim automation.
             </div>
         </div>
     </div>

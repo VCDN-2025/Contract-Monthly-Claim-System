@@ -33,7 +33,7 @@
                     <tr>
                         <td>@item.FullName</td>
                         <td>@item.Email</td>
-                        <td>R@item.ContractHourlyRate.ToString("N2")</td>
+                        <td>R@(item.ContractHourlyRate.ToString("N2"))</td>
                         <td>
                             <a asp-action="EditRate" asp-route-id="@item.LecturerId" class="btn btn-sm btn-warning">Set Rate</a>
                         </td>

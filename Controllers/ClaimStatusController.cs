@@ -65,7 +65,7 @@ namespace CMCS.Controllers
                 {
                     ModelState.AddModelError(nameof(model.HourlyRate),
                         $"Automation Rule Violated: Claim rate must match the official rate (R{lecturerProfile.ContractHourlyRate:N2}) set by HR. Your rate input has been ignored.");
-                   
+
                     return View(model);
                 }
 
@@ -107,6 +107,18 @@ namespace CMCS.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
+        }
+        public IActionResult Details(string id)
+        {
+            var claim = _dataRepository.GetClaimById(id);
+            var currentUserId = _userManager.GetUserId(User);
+
+            if (claim == null || claim.IdentityUserId != currentUserId) 
+            {
+                return NotFound();
+            }
+
+            return View(claim);
         }
     }
 }

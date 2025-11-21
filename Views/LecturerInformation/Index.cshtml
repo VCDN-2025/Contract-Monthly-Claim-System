@@ -41,7 +41,7 @@
                                 <td>@item.LecturerId</td>
                                 <td>@item.FullName</td>
                                 <td>@item.Email</td>
-                                <td>R@item.ContractHourlyRate.ToString("N2")</td>
+                                <td>R@(item.ContractHourlyRate.ToString("N2"))</td>
                                 <td>
                                     <span class="badge @(item.IsActive ? "bg-success" : "bg-danger")">
                                         @(item.IsActive ? "Active" : "Inactive")

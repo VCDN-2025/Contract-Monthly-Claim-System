@@ -45,7 +45,7 @@
                             <tr>
                                 <td>**@claim.ClaimId**</td>
                                 <td>@claim.HoursWorked HRS @(claim.HourlyRate.ToString("C0")) / HR</td>
-                                <td>R@claim.ClaimAmount.ToString("N2")</td>
+                                <td>R@(claim.ClaimAmount.ToString("N2"))</td>
                                 <td>@claim.SubmissionDate.ToString("yyyy-MM-dd")</td>
                                 <td>
                                     <a asp-action="DownloadDocument" asp-route-claimId="@claim.ClaimId" class="btn btn-sm btn-secondary">

@@ -17,7 +17,7 @@
             <dd class="col-sm-8">@Html.DisplayFor(model => model.Email)</dd>
 
             <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractHourlyRate)</dt>
-            <dd class="col-sm-8">R@Model.ContractHourlyRate.ToString("N2")</dd>
+            <dd class="col-sm-8">R@(Model.ContractHourlyRate.ToString("N2"))</dd>
 
             <dt class="col-sm-4">@Html.DisplayNameFor(model => model.ContractStartDate)</dt>
             <dd class="col-sm-8">@Model.ContractStartDate.ToShortDateString()</dd>

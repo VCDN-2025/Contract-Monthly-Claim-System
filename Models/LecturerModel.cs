@@ -2,9 +2,9 @@
 
 namespace CMCS.Models
 {
-    /// <summary>
-    /// Represents the core information about a contracted Lecturer.
-    /// </summary>
+
+    // Represents the core information about a contracted Lecturer.
+
     public class LecturerModel
     {
         // Property: Unique system-generated identifier for the lecturer.
@@ -12,7 +12,6 @@ namespace CMCS.Models
         [Required]
         [Display(Name = "Lecturer ID")]
         public string LecturerId { get; set; } = Guid.NewGuid().ToString().Substring(0, 8).ToUpper();
-
         // Foreign Key to the Identity User
         [Required]
         [StringLength(450)]
@@ -24,10 +23,10 @@ namespace CMCS.Models
         [Display(Name = "Full Name")]
         public string FullName { get; set; } = string.Empty;
 
-        // Property: The professional email address of the lecturer, required and validated as an email format.
+        // FIX: Remove [Required] and make nullable. The email is managed by the Identity User linked above.
         [EmailAddress]
         [Display(Name = "Email Address")]
-        public string Email { get; set; } = string.Empty;
+        public string? Email { get; set; } // Set as nullable string
 
         // Property: The contractually agreed hourly rate, required and within a set range.
         [Required(ErrorMessage = "Hourly Rate is required.")]

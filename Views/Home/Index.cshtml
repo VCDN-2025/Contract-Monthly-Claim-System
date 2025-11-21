@@ -61,30 +61,6 @@
                 </div>
             </div>
 
-            @* My Lecturer Info Card*@
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 shadow-sm text-center">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">My Lecturer Info</h5>
-                        <p class="card-text">Manage your contract, personal, and payment details.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0">
-                        <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-success btn-lg stretched-link">Manage Info</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 shadow-sm text-center">
-                    <div class="card-body">
-                        <h5 class="card-title text-warning">Supporting Documents</h5>
-                        <p class="card-text">Upload and manage documents related to your claims.</p>
-                    </div>
-                    <div class="card-footer bg-transparent border-0">
-                        <a asp-controller="ClaimDocuments" asp-action="Index" class="btn btn-warning btn-lg stretched-link">Manage Docs</a>
-                    </div>
-                </div>
-            </div>
         }
 
         @* PROGRAMME CO-ORDINATOR ACTION*@
@@ -112,7 +88,7 @@
                         <h5 class="card-title text-danger">Academic Manager</h5>
                         <p class="card-text">Conduct final financial approval and sign-off for payment authorization.</p>
                     </div>
-                    <div class="card-footer bg-transparent border-0">
+                    <div class="card-footer bg-transparent text-center">
                         <a asp-controller="AcademicManager" asp-action="Index" class="btn btn-danger btn-lg stretched-link">AM Final Approval</a>
                     </div>
                 </div>
@@ -130,11 +106,24 @@
                         <h5 class="card-title text-dark">HR Management</h5>
                         <p class="card-text">Manage all lecturer contracts, rates, and core system compliance data.</p>
                     </div>
-                    <div class="card-footer bg-transparent border-0">
+                    <div class="card-footer bg-transparent text-center0">
                         <a asp-controller="HR" asp-action="Index" class="btn btn-dark btn-lg stretched-link">HR Dashboard</a>
                     </div>
                 </div>
             </div>
+           
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Lecturer Profile Management</h5>
+                        <p class="card-text">Manage all contract details and rates for CMCS staff.</p>
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <a asp-controller="LecturerInformation" asp-action="Index" class="btn btn-success btn-lg stretched-link">Manage Profiles</a>
+                    </div>
+                </div>
+            </div>
+
         }
 
     </div>
