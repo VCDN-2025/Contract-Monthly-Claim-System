@@ -138,71 +138,70 @@ The application includes robust unit tests using MSTest and Moq to verify core c
 
 9. Acknowledgements and References
 
-Ref.
-
-Source Description
-
-Category
-
-Link
-
-[1]Richard Nwonah: Role-Based Access Control (RBAC) in C# and ASP.NET Core (Core RBAC Implementation)
+9.1 Richard Nwonah: Role-Based Access Control (RBAC) in C# and ASP.NET Core (Core RBAC Implementation)
 
 Catagory: Security/RBAC
 
 Link: https://medium.com/@nwonahr/role-based-access-control-rbac-in-c-and-asp-net-core-the-security-backbone-of-modern-apps-dea1204a0870
 
-[2] Microsoft Learn: ASP.NET Core Identity (General Identity Implementation)
+9.2 Microsoft Learn: ASP.NET Core Identity (General Identity Implementation)
 
 Catagory: Security/Identity
 
 Link: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio
 
-[3] Microsoft Learn: ASP.NET Core Identity Role Seeding
+9.3 Microsoft Learn: ASP.NET Core Identity Role Seeding
 
 Catagory: Database/Seeding
 
 Link: https://learn.microsoft.com/en-us/answers/questions/1529111/how-to-set-asp-net-core-identity-role-automatically
 
-[4] Microsoft Learn: Calculated Fields (Principle used for client-side auto-calculation)
+9.4 Microsoft Learn: Calculated Fields (Principle used for client-side auto-calculation)
 
 Catagory: Automation/Client-Side
 
 Link: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-calculated-fields
 
-[5] Microsoft MSDN: Design Patterns for Data Persistence (Guiding EF Core migration)
+9.5 Microsoft MSDN: Design Patterns for Data Persistence (Guiding EF Core migration)
 
 Catagory: Architecture/EF Core
 
 Link: https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence
 
-[6] Richard Nwonah: Working with Sessions and Cookies in ASP.NET Core (Session Handling for Identity)
+9.6 Richard Nwonah: Working with Sessions and Cookies in ASP.NET Core (Session Handling for Identity)
 
 Catagory: Security/Sessions
 
 Link: https://medium.com/@nwonahr/working-with-sessions-and-cookies-in-asp-net-core-013b24037d91
 
-[7] ChatGPT: Login POST Framework (Used for base structure of AccountController logic)
+9.7 ChatGPT: Login POST Framework (Used for base structure of AccountController logic)
 
 Catagory: Development Tool
 
 Link: https://chatgpt.com/share/6920927b-cc48-8000-9795-a3496f12211d
 
-[8] ChatGPT: Claims Report Generation (Used for filtering structure in HR Reports)
+9.8 ChatGPT: Claims Report Generation (Used for filtering structure in HR Reports)
 
 Category: Development Tool
 
 Link: https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5
 
-[9] Class Repository: Core concepts and architecture (Structural guide)
+9.9 Class Repository: Core concepts and architecture (Structural guide)
 
 Category: Academic
 
 Liknk: https://github.com/fb-shaik/PROG6221-Group2-2025/tree/main
 
+9.10 ChatGPT: Adding Comments
+
+Category: Development Tool
+
+Link: [https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5](https://chatgpt.com/share/6920bad4-41e4-8000-bbab-433e76af47c1)
+
+
 10. Demo Video
 
-YouTube Demo Link: 
+YouTube Demo Link:[ ](https://youtu.be/CTD5cTRetiA)
 
 11. Screenshots / Demo
 
@@ -218,6 +217,7 @@ CMCS Application Home Dashboard
 <img width="1919" height="864" alt="image" src="https://github.com/user-attachments/assets/96874732-da73-4369-b970-567a461a6c1b" />
 <img width="1914" height="866" alt="image" src="https://github.com/user-attachments/assets/39ab0027-8d86-4974-af66-b33e16f1e986" />
 
+There was no lecturer feedback to improve on as i got 100% for the last assignment
 
 
 
