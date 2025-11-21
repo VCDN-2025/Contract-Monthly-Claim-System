@@ -25,7 +25,6 @@ namespace CMCS.Models
         public string FullName { get; set; } = string.Empty;
 
         // Property: The professional email address of the lecturer, required and validated as an email format.
-        [Required(ErrorMessage = "Email address is required.")]
         [EmailAddress]
         [Display(Name = "Email Address")]
         public string Email { get; set; } = string.Empty;

@@ -21,17 +21,23 @@
         </div>
 
         <div class="col-md-6 mb-4">
-            <div class="card text-center bg-light shadow-lg border-secondary">
+            <div class="card text-center shadow-lg border-warning">
                 <div class="card-body">
-                    <h5 class="card-title text-success">Rate Management (Future Feature)</h5>
-                    <p class="card-text">Manage the system's global hourly rates for payment cycles. (To be implemented later).</p>
+                    <h5 class="card-title text-warning">Lecturer Claim Rate Setup</h5>
+                    <p class="card-text">Set the official contract hourly rate used for claim automation.</p>
                 </div>
                 <div class="card-footer bg-transparent border-0">
-                    <a href="#" class="btn btn-secondary btn-lg disabled">Rates Management</a>
+                    <a asp-controller="HR" asp-action="ManageRates" class="btn btn-warning btn-lg stretched-link">Manage Rates</a>
                 </div>
             </div>
         </div>
-
+        <div class="card h-100 shadow-lg border-success">
+            <div class="card-body text-center">
+                <h5 class="card-title text-success">User & Role Management</h5>
+                <p class="card-text">Create new user accounts and assign roles (Lecturer, PC, AM).</p>
+                <a asp-action="CreateUser" class="btn btn-success btn-lg">Create New User</a>
+            </div>
+        </div>
     </div>
 
     <div class="row mt-4">

@@ -1,5 +1,4 @@
-﻿using CMCS.Data;
-using CMCS.DataSeeding;
+﻿using CMCS.DataSeeding;
 using CMCS.Models;
 using CMCS.Services;
 using Microsoft.AspNetCore.Authorization;
