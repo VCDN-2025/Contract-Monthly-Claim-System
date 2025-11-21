@@ -201,7 +201,7 @@ Link: [https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5](https://c
 
 10. Demo Video
 
-YouTube Demo Link:[ ](https://youtu.be/CTD5cTRetiA)
+YouTube Demo Link: https://youtu.be/CTD5cTRetiA
 
 11. Screenshots / Demo
 
