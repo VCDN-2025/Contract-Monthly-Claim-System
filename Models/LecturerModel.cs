@@ -41,7 +41,7 @@ namespace CMCS.Models
         [Display(Name = "Contract Start Date")]
         public DateTime ContractStartDate { get; set; } = DateTime.Now;
 
-        // Property: The end date of the lecturer's contract, required and formatted as a date.
+        //The end date of the lecturer's contract, required and formatted as a date.
         [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Contract End Date")]
