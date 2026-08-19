@@ -1,225 +1,191 @@
-CMCS: Contractor Monthly Claim System 
+# CMCS — Contractor Monthly Claim System
 
-1. Project Title
+CMCS is a **production-grade ASP.NET Core 8 MVC web application** built to streamline, secure, and automate the independent contractor claim and approval process within an academic institution. It replaces manual, error-prone claim handling with a fully role-based digital workflow — from claim submission to policy-enforced approval and HR reporting.
 
-CMCS: Contractor Monthly Claim System (ASP.NET Core 8 MVC)
+---
 
-2. Project Description
+## Overview
 
-CMCS is a web application designed to streamline, secure, and automate the independent contractor claim and approval process within an academic institution.
+The **Part 3** release focused on achieving **enterprise readiness**, layering in a robust security model and automating key business rules on top of the earlier prototype.
 
-The Part 3 focus was on achieving enterprise readiness by implementing a robust security model and automating key business rules.
+### Key Architectural Shifts (Part 2 → Part 3)
 
-Key Architectural Shifts (Part 2 -> Part 3)
+| Area | Part 2 | Part 3 |
+| :--- | :--- | :--- |
+| **Data Persistence** | Encrypted JSON File Storage | SQL Server via Entity Framework Core |
+| **Security** | Basic access control | Full ASP.NET Identity (Authentication + RBAC) |
+| **Automation** | Manual calculation | Client-side + server-side rate enforcement & policy checks |
 
-Data Persistence: Migrated from Encrypted JSON File Storage to SQL Server via Entity Framework Core (EF Core) [5].
+---
 
-Security: Implemented full ASP.NET Identity for user authentication and authorization (RBAC) [1].
+## Features
 
-Automation: Implemented client-side and server-side automation for rate enforcement and policy checks.
+### Two-Stage Approval Workflow
+- Claims move through a defined chain: **Lecturer → Programme Co-ordinator → Academic Manager**.
+- Each stage has its own role-scoped dashboard and actions.
 
-Core Features
+### Automated Rate Enforcement & Calculation
+- **Rate Enforcement**: A lecturer's `ContractHourlyRate` is pulled directly from HR-managed database records and used for every claim calculation — user input is never trusted for rate values.
+- **Live Auto-Calculation**: jQuery calculates the `ClaimAmount` client-side as hours are entered, giving lecturers instant feedback.
 
-Two-Stage Approval Workflow: Claims follow a defined path: Lecturer -> Programme Co-ordinator -> Academic Manager.
+### Policy Verification
+- The Programme Co-ordinator's `Verify` action automatically rejects claims that breach the `MAX_HOURS_PER_MONTH` policy (e.g., 150 hours), preventing non-compliant claims from progressing.
 
-Automation: Auto-calculation of claims and policy enforcement (e.g., maximum hours rule) [7].
+### Role-Based Access Control (RBAC)
+- Every controller is protected with `[Authorize(Roles="...")]`, ensuring users only ever see dashboards and data relevant to their role.
 
-RBAC: Strict access control ensures users only see role-specific dashboards [1].
+### HR Reporting
+- Complex LINQ-driven, multi-filter reports let HR query claims by status, date range, and amount for data analysis.
 
-HR Reporting: Multi-filter query generation for data analysis.
+---
 
-3. Getting Started
+## Tech Stack
 
-Follow these steps to set up and run the CMCS application in your local environment.
+| Category | Technology |
+| :--- | :--- |
+| **Framework** | ASP.NET Core MVC (.NET 8) |
+| **Language** | C# |
+| **ORM** | Entity Framework Core (Code-First / Migrations) |
+| **Database** | SQL Server |
+| **Frontend** | Razor Views + jQuery |
+| **Authentication** | ASP.NET Identity |
+| **Architecture** | MVC + Service Layer abstraction |
+| **Testing** | MSTest + Moq |
 
-Prerequisites
+---
 
-Visual Studio 2022 (Version 17.14 or later).
+## Project Structure
 
-.NET 8.0 SDK.
+```
+CMCS/
+├── Controllers/      # MVC controllers, protected via [Authorize(Roles="...")]
+├── Models/           # EF Core entities (ClaimModel, LecturerModel) & ViewModels
+├── Services/         # Core logic (FileUploadService.cs) and utility methods
+├── Data/             # CmcsDbContext.cs (EF Core/Identity) + DataRepository.cs
+├── DataSeeding/       # DbSeeder.cs — seeds initial Roles and HR Admin user
+└── Migrations/        # EF Core–generated SQL schema migrations
+```
 
-SQL Server LocalDB (or any local SQL Server instance).
+---
 
-Installation Steps
+## Automation Feature Map
 
-Clone the Repository:
+| Feature | Location | Description |
+| :--- | :--- | :--- |
+| **User Management** | `HRController` | HR creates accounts and assigns roles via `UserManager` |
+| **Rate Enforcement** | `HR/LecturerInfo`, `ClaimStatusController` | HR-set hourly rate overrides any user-entered value |
+| **Auto-Calculation** | `ClaimStatus/Create.cshtml` | jQuery computes `ClaimAmount` live as hours are typed |
+| **Policy Verification** | `ProgrammeCoOrdinatorController` | Auto-rejects claims exceeding the max-hours policy |
+| **Reports** | `HRController/Reports` | Complex LINQ queries filter claims by status, date, amount |
 
-git clone [https://github.com/VCDN-2025/prog6212-poe-part-3-WandileSimamane.git](https://github.com/VCDN-2025/prog6212-poe-part-3-WandileSimamane.git)
+---
 
+## Getting Started
 
-Open the Solution:
+### Prerequisites
+- Visual Studio 2022 (v17.14 or later)
+- .NET 8.0 SDK
+- SQL Server LocalDB (or any local SQL Server instance)
 
-Navigate to the cloned folder and open the CMCS.sln file in Visual Studio.
+### Installation
 
-Configure Connection String:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/VCDN-2025/prog6212-poe-part-3-WandileSimamane.git
+   ```
 
-Ensure your appsettings.json contains a valid SQL Server connection string for "DefaultConnection".
+2. **Open the solution**
+   Navigate to the cloned folder and open `CMCS.sln` in Visual Studio.
 
-Run EF Core Migrations (Initial Setup):
+3. **Configure the connection string**
+   Ensure `appsettings.json` contains a valid SQL Server connection string for `DefaultConnection`.
 
-Open the Package Manager Console (PMC).
+4. **Run EF Core migrations**
+   Open the Package Manager Console (PMC) and run:
+   ```powershell
+   Update-Database
+   ```
 
-Ensure all necessary migrations are applied (if starting from a fresh database):
+5. **Build and run**
+   Press `F5` or click **Start**. Initial roles and the HR Admin account are seeded automatically on first run.
 
-Update-Database
+### Default Test Credentials
 
+| Field | Value |
+| :--- | :--- |
+| **Role** | HR Admin (seeded) |
+| **Email** | `hr@cmcs.com` |
+| **Password** | `HRPassword123!` |
+| **Access** | System Setup, Reports, User Management |
 
-Build and Run:
+---
 
-Press F5 or click the 'Start' button.
+## Configuration
 
-The application will automatically seed the initial roles and the HR Admin account on first run.
+### Data Persistence
+Data is persisted to SQL Server (`CMCS_Part3_DB`) via Entity Framework Core, configured through `appsettings.json`.
 
-Default Test Credentials
+### Security & Sessions
+ASP.NET Identity manages authentication, authorization, and role assignment. Session state tracks the logged-in user to enforce security across requests.
 
-Role : HR Admin (Seeded)
+---
 
-Email: hr@cmcs.com
+## Dependencies
 
-Password: HRPassword123!
+- `Microsoft.EntityFrameworkCore.SqlServer` — database provider
+- `Microsoft.EntityFrameworkCore.Tools` — migration commands
+- `Microsoft.AspNetCore.Identity.EntityFrameworkCore` — security framework
 
-Access : System Setup, Reports, User Management
+---
 
-4. Project Structure
+## Testing
 
-The architecture is structured around the MVC pattern with a clear separation of data and security logic:
+Unit tests are written with **MSTest** and **Moq**, covering controller logic, separation of concerns, and automated rule enforcement.
 
-Controllers/: Contains all MVC controllers, protected by the [Authorize(Roles="...")] attribute [1].
+---
 
-Models/: Contains all EF Core entity models (ClaimModel, LecturerModel) and ViewModels.
+## Demo
 
-Services/: Contains core logic abstractions (FileUploadService.cs) and utility methods.
+📺 **YouTube Walkthrough**: [Watch the demo](https://youtu.be/CTD5cTRetiA)
 
-Data/: Contains the CmcsDbContext.cs (EF Core/Identity) and the DataRepository.cs (Service Layer abstraction).
+> No lecturer feedback was carried over — the previous assignment submission received 100%.
 
-DataSeeding/: Contains DbSeeder.cs, which creates initial Roles and the HR Admin user [3].
+---
 
-Migrations/: Contains the C# code files generated by EF Core to manage the SQL schema.
+## Screenshots
 
-5. Configuration
+<p align="center">
+<img width="900" alt="CMCS Dashboard 1" src="https://github.com/user-attachments/assets/f976dc16-2c8b-4f35-8d71-f4b71bf2a91a" />
+<img width="900" alt="CMCS Dashboard 2" src="https://github.com/user-attachments/assets/678b5f55-3bd7-43d3-8c1d-3e665ecbed96" />
+<img width="900" alt="CMCS Dashboard 3" src="https://github.com/user-attachments/assets/061ac804-9e53-4c12-9abf-6be53fcd4c5a" />
+<img width="900" alt="CMCS Dashboard 4" src="https://github.com/user-attachments/assets/fc72a8d8-1920-42cd-90c5-756695fccb6e" />
+<img width="900" alt="CMCS Dashboard 5" src="https://github.com/user-attachments/assets/7be101da-81a2-4dd3-b09e-0f407c7b8e57" />
+<img width="900" alt="CMCS Dashboard 6" src="https://github.com/user-attachments/assets/b3d0703e-2870-494d-8067-146104efb3a6" />
+<img width="900" alt="CMCS Dashboard 7" src="https://github.com/user-attachments/assets/e40ae18d-273f-4569-8f74-bdb777920e67" />
+<img width="900" alt="CMCS Dashboard 8" src="https://github.com/user-attachments/assets/f591af07-ea6e-42d5-9027-6e9bb8816ff8" />
+<img width="900" alt="CMCS Dashboard 9" src="https://github.com/user-attachments/assets/96874732-da73-4369-b970-567a461a6c1b" />
+<img width="900" alt="CMCS Dashboard 10" src="https://github.com/user-attachments/assets/39ab0027-8d86-4974-af66-b33e16f1e986" />
+</p>
 
-Data Persistence
+---
 
-The system uses Entity Framework Core to persist data to a SQL Server database (CMCS_Part3_DB) as configured in appsettings.json.
+## Acknowledgements & References
 
-Security
+| # | Source | Category | Link |
+| :--- | :--- | :--- | :--- |
+| 1 | Richard Nwonah — RBAC in C# and ASP.NET Core | Security / RBAC | [Medium](https://medium.com/@nwonahr/role-based-access-control-rbac-in-c-and-asp-net-core-the-security-backbone-of-modern-apps-dea1204a0870) |
+| 2 | Microsoft Learn — ASP.NET Core Identity | Security / Identity | [Docs](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio) |
+| 3 | Microsoft Learn — Identity Role Seeding | Database / Seeding | [Docs](https://learn.microsoft.com/en-us/answers/questions/1529111/how-to-set-asp-net-core-identity-role-automatically) |
+| 4 | Microsoft Learn — Calculated Fields | Automation / Client-Side | [Docs](https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-calculated-fields) |
+| 5 | Microsoft MSDN — Design Patterns for Data Persistence | Architecture / EF Core | [MSDN](https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence) |
+| 6 | Richard Nwonah — Sessions and Cookies in ASP.NET Core | Security / Sessions | [Medium](https://medium.com/@nwonahr/working-with-sessions-and-cookies-in-asp-net-core-013b24037d91) |
+| 7 | ChatGPT — Login POST Framework | Development Tool | [Chat](https://chatgpt.com/share/6920927b-cc48-8000-9795-a3496f12211d) |
+| 8 | ChatGPT — Claims Report Generation | Development Tool | [Chat](https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5) |
+| 9 | Class Repository — Core Concepts & Architecture | Academic | [GitHub](https://github.com/fb-shaik/PROG6221-Group2-2025/tree/main) |
+| 10 | ChatGPT — Adding Comments | Development Tool | [Chat](https://chatgpt.com/share/6920bad4-41e4-8000-bbab-433e76af47c1) |
 
-ASP.NET Identity is configured to manage user sessions and roles [3].
+---
 
-Session Management: The system requires sessions to track the logged-in user and enforce security [6].
+## Author
 
-6. Usage & Automation Features
-
-The application contains several key automation features that fulfill the Part 3 requirements:
-
-6.1 User Management -> HRController : HR creates new accounts and assigns roles using the UserManager [3].
-
-6.2 Rate Enforcement -> HR/LecturerInfo, ClaimStatusController: The lecturer's ContractHourlyRate is fetched from the database (HR-set) and used for claim calculation, overriding any user input [2].
-
-6.3 Auto-Calculation -> ClaimStatus/Create.cshtml: jQuery is used for client-side calculation of the ClaimAmount as the lecturer types the hours [4].
-
-6.4 Policy Verification -> ProgrammeCoOrdinatorController: The Verify action automatically rejects claims that violate the MAX_HOURS_PER_MONTH policy (e.g., 150 hours) [7].
-
-6.5 Reports -> HRController/Reports: Uses complex LINQ queries to filter claims by multiple criteria (status, date, amount) [8].
-
-7. Dependencies
-
-The project relies on essential NuGet packages for the advanced Part 3 features:
-
-Microsoft.EntityFrameworkCore.SqlServer (Database Provider).
-
-Microsoft.EntityFrameworkCore.Tools (Migration Commands).
-
-Microsoft.AspNetCore.Identity.EntityFrameworkCore (Security Framework).
-
-8. Testing
-
-The application includes robust unit tests using MSTest and Moq to verify core controller logic, separation of concerns, and automated rule enforcement [9].
-
-9. Acknowledgements and References
-
-9.1 Richard Nwonah: Role-Based Access Control (RBAC) in C# and ASP.NET Core (Core RBAC Implementation)
-
-Catagory: Security/RBAC
-
-Link: https://medium.com/@nwonahr/role-based-access-control-rbac-in-c-and-asp-net-core-the-security-backbone-of-modern-apps-dea1204a0870
-
-9.2 Microsoft Learn: ASP.NET Core Identity (General Identity Implementation)
-
-Catagory: Security/Identity
-
-Link: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-10.0&tabs=visual-studio
-
-9.3 Microsoft Learn: ASP.NET Core Identity Role Seeding
-
-Catagory: Database/Seeding
-
-Link: https://learn.microsoft.com/en-us/answers/questions/1529111/how-to-set-asp-net-core-identity-role-automatically
-
-9.4 Microsoft Learn: Calculated Fields (Principle used for client-side auto-calculation)
-
-Catagory: Automation/Client-Side
-
-Link: https://learn.microsoft.com/en-us/power-apps/maker/data-platform/define-calculated-fields
-
-9.5 Microsoft MSDN: Design Patterns for Data Persistence (Guiding EF Core migration)
-
-Catagory: Architecture/EF Core
-
-Link: https://learn.microsoft.com/en-us/archive/msdn-magazine/2009/april/design-patterns-for-data-persistence
-
-9.6 Richard Nwonah: Working with Sessions and Cookies in ASP.NET Core (Session Handling for Identity)
-
-Catagory: Security/Sessions
-
-Link: https://medium.com/@nwonahr/working-with-sessions-and-cookies-in-asp-net-core-013b24037d91
-
-9.7 ChatGPT: Login POST Framework (Used for base structure of AccountController logic)
-
-Catagory: Development Tool
-
-Link: https://chatgpt.com/share/6920927b-cc48-8000-9795-a3496f12211d
-
-9.8 ChatGPT: Claims Report Generation (Used for filtering structure in HR Reports)
-
-Category: Development Tool
-
-Link: https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5
-
-9.9 Class Repository: Core concepts and architecture (Structural guide)
-
-Category: Academic
-
-Liknk: https://github.com/fb-shaik/PROG6221-Group2-2025/tree/main
-
-9.10 ChatGPT: Adding Comments
-
-Category: Development Tool
-
-Link: [https://chatgpt.com/share/6920963d-4678-8000-a637-939e514d1df5](https://chatgpt.com/share/6920bad4-41e4-8000-bbab-433e76af47c1)
-
-
-10. Demo Video
-
-YouTube Demo Link: https://youtu.be/CTD5cTRetiA
-
-11. Screenshots / Demo
-
-CMCS Application Home Dashboard 
-<img width="1904" height="941" alt="image" src="https://github.com/user-attachments/assets/f976dc16-2c8b-4f35-8d71-f4b71bf2a91a" />
-<img width="1908" height="873" alt="image" src="https://github.com/user-attachments/assets/678b5f55-3bd7-43d3-8c1d-3e665ecbed96" />
-<img width="1902" height="974" alt="image" src="https://github.com/user-attachments/assets/061ac804-9e53-4c12-9abf-6be53fcd4c5a" />
-<img width="1915" height="869" alt="image" src="https://github.com/user-attachments/assets/fc72a8d8-1920-42cd-90c5-756695fccb6e" />
-<img width="1907" height="885" alt="image" src="https://github.com/user-attachments/assets/7be101da-81a2-4dd3-b09e-0f407c7b8e57" />
-<img width="1918" height="871" alt="image" src="https://github.com/user-attachments/assets/b3d0703e-2870-494d-8067-146104efb3a6" />
-<img width="1908" height="958" alt="image" src="https://github.com/user-attachments/assets/e40ae18d-273f-4569-8f74-bdb777920e67" />
-<img width="1908" height="958" alt="image" src="https://github.com/user-attachments/assets/f591af07-ea6e-42d5-9027-6e9bb8816ff8" />
-<img width="1919" height="864" alt="image" src="https://github.com/user-attachments/assets/96874732-da73-4369-b970-567a461a6c1b" />
-<img width="1914" height="866" alt="image" src="https://github.com/user-attachments/assets/39ab0027-8d86-4974-af66-b33e16f1e986" />
-
-There was no lecturer feedback to improve on as i got 100% for the last assignment
-
-
-
-
-
+**Wandile Simamane**
